@@ -1,3 +1,3 @@
 # shell_scripts
 basic shell scripts
-few basic commands
+few basic commands and tricks !!
