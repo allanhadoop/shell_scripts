@@ -1,0 +1,1239 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fnil\fcharset0 Cambria;\f1\froman\fcharset0 Times-Roman;\f2\fmodern\fcharset0 Courier;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fnil\fcharset0 Calibri;}
+{\colortbl;\red255\green255\blue255;\red254\green187\blue100;\red255\green252\blue171;\red179\green179\blue179;
+\red205\green205\blue205;\red191\green191\blue191;\red0\green0\blue255;\red254\green253\blue213;\red217\green234\blue202;
+\red230\green230\blue230;\red246\green250\blue211;\red154\green154\blue154;\red254\green209\blue152;}
+\margl1440\margr1440\vieww22140\viewh11720\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs36 \cf0 Linux Advance Scripting - Part II 
+\fs26 \
+\
+\cb2 Started from http://tldp.org/LDP/abs/html/x17974.html#USINGEXECREF\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs28 \cf0 \cb1 \
+\cb3 Bulletin Variables - \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs26 \cf0 \cb1 A builtin is a command contained within the Bash tool set, literally built in. This is either for performance reasons -- builtins execute faster than external commands, which usually require forking off  a separate process -- or because a particular builtin needs direct access to the shell internals.\
+\
+When a command or the shell itself initiates (or spawns) a new subprocess to carry out a task, this is called \cb4 forking\cb1 . This new process is the \cb5 child\cb1 , and the process that forked it off is the \cb5 parent\cb1 . While the child process is doing its work, the parent process is still executing.\
+\
+\pard\pardeftab720
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+Note that while a 
+\i \expnd0\expndtw0\kerning0
+parent process
+\i0 \expnd0\expndtw0\kerning0
+ gets the 
+\i \expnd0\expndtw0\kerning0
+process ID
+\i0 \expnd0\expndtw0\kerning0
+ of the 
+\i \expnd0\expndtw0\kerning0
+child process
+\i0 \expnd0\expndtw0\kerning0
+, and can thus pass arguments to it, 
+\i \expnd0\expndtw0\kerning0
+the reverse is not true
+\i0 \expnd0\expndtw0\kerning0
+.
+\f0 \kerning1\expnd0\expndtw0 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs28 \cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3160\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12040\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \lastrow\row
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+\cb3 Internal Variables \'97 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \cb1 \expnd0\expndtw0\kerning0
+$BASH
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\pardeftab720
+\cf0 The path to the Bash binary itself\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+/bin/bash
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$BASH_ENV
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs26 \cf0 There are two types variables 1. \cb4 LOCAL\cb1  and \cb4 Environment\cb1  variables (Variables that affect the behavior of the shell and user interface) . So in general , each process has an environment. Every time a shell starts, it creates shell variables that correspond to its own environmental variables. Updating or adding new environmental variables causes the shell to update its environment, and all the shell's child processes (the commands it executes) inherit this environment.\
+\
+If a script sets environmental variables, they need to be "exported," that is, reported to the environment local to the script. This is the function of the export command.\
+\
+A script can export variables only to child processes, that is, only to commands or processes which that particular script initiates. A script invoked from the command-line cannot export variables back to the command-line environment. Child processes cannot export variables back to the parent processes that spawned them.\
+\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs28 \cf0 Example 4-5. Positional Parameters\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$0
+\f1\fs32 \expnd0\expndtw0\kerning0
+ is the name of the script itself, 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$1
+\f1\fs32 \expnd0\expndtw0\kerning0
+ is the first argument, 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$2
+\f1\fs32 \expnd0\expndtw0\kerning0
+ the second, 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$3
+\f1\fs32 \expnd0\expndtw0\kerning0
+ the third, and so forth. \expnd0\expndtw0\kerning0
+After 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$9
+\f1\fs32 \expnd0\expndtw0\kerning0
+, the arguments must be enclosed in brackets, for example, 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$\{10\}
+\f1\fs32 \expnd0\expndtw0\kerning0
+, 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$\{11\}
+\f1\fs32 \expnd0\expndtw0\kerning0
+, 
+\f2\fs26 \expnd0\expndtw0\kerning0
+$\{12\}
+\f1\fs32 \expnd0\expndtw0\kerning0
+.
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+
+\f2\fs20 \cb8 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+if [ -n "$1" ]              # Tested variable is quoted.\
+then\
+ echo "Parameter #1 is $1"  # Need quotes to escape #\
+fi 
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+if [ -n "$\{10\}" ]  # Parameters > $9 must be enclosed in \{brackets\}.\
+then\
+ echo "Parameter #10 is $\{10\}"\
+fi \
+args=$#\
+echo args           #This will print count of argument passed to script\
+
+\f0\fs26 \kerning1\expnd0\expndtw0 lastargument=$\{!args\}
+\fs20 \
+echo last argument                   #This will print last argument passed to the script.. This is also called indirect reference \
+\
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs26 \cf0 \cb1 Bracket notation for positional parameters leads to a fairly simple way of referencing the last argument passed to a script on the command-line. This also requires indirect referencing
+\fs28 \
+\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf0 Example 4-7. Using shift\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 This command reassigns the positional parameters, in effect shifting them to the left one notch.\
+\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \expnd0\expndtw0\kerning0
+$1
+\f1 \expnd0\expndtw0\kerning0
+ <--- 
+\f2 \expnd0\expndtw0\kerning0
+$2
+\f1 \expnd0\expndtw0\kerning0
+, 
+\f2 \expnd0\expndtw0\kerning0
+$2
+\f1 \expnd0\expndtw0\kerning0
+ <--- 
+\f2 \expnd0\expndtw0\kerning0
+$3
+\f1 \expnd0\expndtw0\kerning0
+, 
+\f2 \expnd0\expndtw0\kerning0
+$3
+\f1 \expnd0\expndtw0\kerning0
+ <--- 
+\f2 \expnd0\expndtw0\kerning0
+$4
+\f1 \expnd0\expndtw0\kerning0
+, etc.\
+\
+
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+
+\f2\fs22 \cb9 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+#             sh test.sh a b c def 83 barndoor\
+until [ -z "$1" ]  # Until all parameters used up . . .\
+do\
+  echo -n "$1 "    #  \expnd0\expndtw0\kerning0
+a b c def 83 barndoor\expnd0\expndtw0\kerning0
+\
+  shift            #  or we can also use shift<number of position id e.g. 2> \
+done\
+# But, what happens to the "used-up" parameters?\
+echo "$2"\
+#  Nothing echoes!
+\fs26 \
+
+\f0\fs28 \cb1 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clheight3939 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clheight3939 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Example 4-6. wh, whois domain name lookup\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+# Does a 'whois domain-name' lookup on any of 3 alternate servers:\
+#                    ripe.net, cw.net, radb.net\
+# Place this script -- renamed 'wh' -- in /usr/local/bin\
+# Requires symbolic links:\
+# ln -s /usr/local/bin/wh /usr/local/bin/wh-ripe\
+# ln -s /usr/local/bin/wh /usr/local/bin/wh-apnic\
+# ln -s /usr/local/bin/wh /usr/local/bin/wh-tucows\
+\
+E_NOARGS=75\
+if [ -z "$1" ]\
+then\
+  echo "Usage: `basename $0` [domain-name]"\
+  exit $E_NOARGS\
+fi\
+# Check script name and call proper server.\
+case `basename $0` in    # Or:    case $\{0##*/\} in\
+    "wh"       ) whois $1@whois.tucows.com;;\
+    "wh-ripe"  ) whois $1@whois.ripe.net;;\
+    "wh-apnic" ) whois $1@whois.apnic.net;;\
+    "wh-cw"    ) whois $1@whois.cw.net;;\
+    *          ) echo "Usage: `basename $0` [domain-name]";;\
+esac \
+exit $?
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs26 \cf0 $BASH_SUBSHELL\cell 
+\pard\intbl\itap1\pardeftab720
+
+\fs28 \cf0 A variable indicating the subshell level.\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$BASHPID
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs24 \cf0 \expnd0\expndtw0\kerning0
+Process ID of the current instance of Bash.\
+bash4$ 
+\f3\b \expnd0\expndtw0\kerning0
+echo $BASHPID
+\f2\b0 \expnd0\expndtw0\kerning0
+\
+11015
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clheight316 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clheight316 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$BASH_VERSINFO[n]
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \expnd0\expndtw0\kerning0
+for n in 0 1 2 3 4 5\
+do\
+  echo "BASH_VERSINFO[$n] = $\{BASH_VERSINFO[$n]\}"\
+done  \
+\
+# BASH_VERSINFO[0] = 3                      # Major version no.\
+# BASH_VERSINFO[1] = 00                     # Minor version no.\
+# BASH_VERSINFO[2] = 14                     # Patch level.\
+# BASH_VERSINFO[3] = 1                      # Build version.\
+# BASH_VERSINFO[4] = release                # Release status.\
+# BASH_VERSINFO[5] = i386-redhat-linux-gnu  # Architecture
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$BASH_VERSION
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 The version of Bash installed on the system\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$CDPATH
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 A colon-separated list of search paths available to the cd command, similar in function to the $PATH variable for binaries. The $CDPATH variable may be set in the local \cb4 ~/.bashrc\cb1  file.\
+\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \expnd0\expndtw0\kerning0
+bash$ 
+\f3\b \expnd0\expndtw0\kerning0
+cd bash-doc
+\f2\b0 \expnd0\expndtw0\kerning0
+\
+bash: cd: bash-doc: No such file or directory\
+\
+bash$ 
+\f3\b \expnd0\expndtw0\kerning0
+CDPATH=/usr/share/doc
+\f2\b0 \expnd0\expndtw0\kerning0
+\
+bash$ 
+\f3\b \expnd0\expndtw0\kerning0
+cd bash-doc
+\f2\b0 \expnd0\expndtw0\kerning0
+\
+/usr/share/doc/bash-doc\
+\
+bash$ 
+\f3\b \expnd0\expndtw0\kerning0
+echo $PWD
+\f2\b0 \expnd0\expndtw0\kerning0
+\
+/usr/share/doc/bash-doc
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+ Array \
+Example 27-1. Simple array usage
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0  Newer versions of Bash support one-dimensional arrays. Array elements may be initialized with the \cb5 variable[xx]\cb1  notation. Alternatively, a script may introduce the entire array by an explicit declare \cb10 -a\cb1  variable statement. To dereference (retrieve the contents of) an array element, use curly bracket notation, that is, \cb5 $\{element[xx]\}.\cb1 \
+\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs24 \cf0 \cb8 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cb10 arr[2]=20\cb8 \
+arr[4]=40\
+arr[5]=`expr $\{arr[2]\} + $\{arr[4]\}`\
+echo $arr[5]\
+\cb1 \'97\
+Output \
+60\
+Another way to use array\
+\pard\intbl\itap1\pardeftab720
+
+\f2 \cf0 \cb8 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \cb8 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural
+\cf0 \cb10 arr=( 20 30 )  \cb8 \
+echo $arr[1]\
+\cb1 \'97\
+Output \
+30\
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Another way to use array\
+\pard\intbl\itap1\pardeftab720
+
+\f2 \cf0 \cb8 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \cb8 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural
+\cf0 \cb10 arr=( [3]=40 [5]=50 )\cb8 \
+arr[0]=`expr $\{arr[3]\} + $\{arr[5]\}`\
+echo $arr[0]\
+\cb1 \'97\
+Output \
+90
+\fs28 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf0 Bash permits array operations on variables, even if the variables are not explicitly declared as arrays\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs24 \cf0 \expnd0\expndtw0\kerning0
+string=abcABC123ABCabc\
+echo $\{string[@]\}               # abcABC123ABCabc\
+echo $\{string[*]\}               # abcABC123ABCabc \
+echo $\{string[0]\}               # abcABC123ABCabc\
+echo $\{string[1]\}               # No output!\
+
+\fs26 echo $\{#string[@]\}            # 1 .. here whole string 
+\fs24 \expnd0\expndtw0\kerning0
+abcABC123ABCabc  
+\fs26 \expnd0\expndtw0\kerning0
+is just 1 element of an array
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf0 Example 27-2. Formatting a poem\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \cb9 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+Line[1]="I do not know which to prefer,"\
+Line[2]="The beauty of inflections"\
+Attrib[1]=" Wallace Stevens"\
+Attrib[2]="\\"Thirteen Ways of Looking at a Blackbird\\""\
+tput bold                             # Bold print.\
+for index in 1 2 3 4 5                # Five lines.\
+do\
+  printf "     %s\\n" "$\{Line[index]\}"\
+done\
+for index in 1 2                      # Two attribution lines.\
+do\
+  printf "          %s\\n" "$\{Attrib[index]\}"\
+done\
+tput sgr0                             # Reset terminal.
+\fs26 \
+\cb1 Output \
+\pard\intbl\itap1\pardeftab720
+
+\f3\b\fs22 \cf0 \cb9 \expnd0\expndtw0\kerning0
+I do not know which to prefer,
+\fs26 \cb1 \expnd0\expndtw0\kerning0
+\
+
+\fs22 \cb9 \expnd0\expndtw0\kerning0
+The beauty of inflections\
+  Wallace Stevens\
+  Thirteen Ways of Looking at a Blackbird
+\f0\fs28 \cb1 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b0 \cf0 Example 27-3. Various array operations\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 So simple rule, if we need count then use $\{#arrayname[<number of element>]\} or for total count of elements of array use $\{#arrayname[*]\} and to get position of each component of element use $\{array:<number of component>\}\
+
+\fs24 \
+ either $\{array_name[@]\} or $\{array_name[*]\} refers to all the elements of the array. Similarly, to get a count of the number of elements in an array, use either $\{#array_name[@]\} or $\{#array_name[*]\}. $\{#array_name\} is the length (number of characters) of $\{array_name[0]\}, the first element of the array.\
+\
+\pard\intbl\itap1\pardeftab720
+
+\f2 \cf0 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+array=( zero one two three four five )\
+# Element 0   1   2    3     4    5
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{array:0\}        #  zero
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{array:1\}        #  ero
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{#array[0]\}      #  4 Length of first element of array.
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{#array[1]\}      #  3 Length of second element of array.
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{#array[*]\}      #  6 Number of elements in array.
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf0 Example 27-4. String operations on arrays\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+arrayZ=( one two three four five five )\
+\
+\'97\'97\'97Trailing Substring Extraction\
+echo $\{arrayZ[@]:0\}              # one two three four five five\
+echo $\{arrayZ[@]:1\}              # two three four five five\
+echo $\{arrayZ[@]:1:2\}            # two three\
+\
+\pard\intbl\itap1\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\'97\'97\'97\expnd0\expndtw0\kerning0
+Substring Removal from front of string(s).\expnd0\expndtw0\kerning0
+\
+\pard\intbl\itap1\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+echo $\{arrayZ[@]#f*r\}   # one two three five five ;shortest matches "four" and removes it.\expnd0\expndtw0\kerning0
+\
+\expnd0\expndtw0\kerning0
+echo $\{arrayZ[@]##t*e\}  # one two four five five; longest matches "three" and removes it.\expnd0\expndtw0\kerning0
+\
+\
+\'97\'97\'97Substring Removal from back of string(s).\
+\expnd0\expndtw0\kerning0
+echo $\{arrayZ[@]%h*e\}   # one two t four five five, shortest matches "hree" and removes it.\
+echo $\{arrayZ[@]%%t*e\}  # one two four five five, longest matches "three" and removes it.\
+\
+\pard\intbl\itap1\pardeftab720
+\cf0 \expnd0\expndtw0\kerning0
+\'97\'97\'97\expnd0\expndtw0\kerning0
+Substring Replacement\
+echo $\{arrayZ[@]/fiv/XYZ\}   # one two three four XYZe XYZe, replace first occurrence\
+echo $\{arrayZ[@]//iv/YY\}    # one two three four fYYe fYYe, replace all occurrences\
+echo $\{arrayZ[@]//fi/\}      # one two three four ve ve , Delete all occurrences\
+echo $\{arrayZ[@]/#fi/XY\}    # one two three four XYve XYve, Replace front-end occurrences\
+echo $\{arrayZ[@]/%ve/ZZ\}    # one two three four fiZZ fiZZ, Replace back-end occurrences \
+echo $\{arrayZ[@]/%o/XX\}     # one twXX three four five five\
+\pard\intbl\itap1\pardeftab720
+
+\f0 \cf0 \kerning1\expnd0\expndtw0 \
+\'97\'97 Replacement \
+
+\f2 \expnd0\expndtw0\kerning0
+replacement() \{\
+    echo -n "!!!"\
+\}
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{arrayZ[@]/%e/$(replacement)\}       # on!!! two thre!!! four fiv!!! fiv!!!
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+echo $\{arrayZ[@]//*/$(replacement optional_arguments)\}      # !!! !!! !!! !!! !!! !!!
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Example 27-5. Loading the contents of a script into an array\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs24 \cf0 \cb9 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+# script-array.sh: Loads this script into an array.\
+script_contents=( $(cat "$0") )  #  Stores contents of this script ($0)\
+                                 #+ in an array.\
+\
+for element in $(seq 0 $(($\{#script_contents[@]\} - 1)))\
+  do                #  $\{#script_contents[@]\}\
+                    #+ gives number of elements in the array. So seq 0 will print from $!/bin/bash onwards\
+  echo -n "$\{script_contents[$element]\}"\
+                    # List each field of this script on a single line.\
+# echo -n "$\{script_contents[element]\}" also works because of $\{ ... \}.\
+  echo -n " -- "    # Use " -- " as a field separator.\
+done\
+
+\fs26 \cb1 \'97\'97\'97Output \
+#!/bin/bash \'97 - script_contents=( \'97 - $(cat - - \'93$0\'94) - - ) \'85\'85\'85\'85
+\f4 so basically it is putting \'97 - at each spaces since it is end of element in array. \cb4 seq\cb1  is for index of start 
+\f2 \
+
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Example 27-6. Some special properties of arrays\cell 
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs24 \cf0 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+declare -a colors    #This will treat colors as an array but this is not mandatory\
+echo "Enter your favorite colors (separated from each other by a space)."\
+read -a colors    # Enter at least 3 colors for good understanding \
+index=0\
+while [ $index -lt \expnd0\expndtw0\kerning0
+$\{#colors[@]\}\expnd0\expndtw0\kerning0
+ ]\
+do\
+echo $\{colors[$index]\}\
+let "index = $index + 1"       #or we can use ((index++))\
+done
+\fs26 \
+unset colors[1]              #this will delete second color (1 is second index) \
+unset colors                 #this will delete all colors
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf0 Example 27-7. Of empty arrays and empty elements\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 An empty array is not same as an array with empty elements.\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+
+\f2\fs26 \expnd0\expndtw0\kerning0
+array0=( first second third )\
+array1=( '' )                                # "array1" consists of one empty element.\
+array2=( )                                   # No elements . . . "array2" is empty.\
+array3=(   )                                  
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+
+\f2\fs26 \expnd0\expndtw0\kerning0
+ListArrayFunction() \{\
+echo "Elements in array0:  $\{array0[@]\}"     \expnd0\expndtw0\kerning0
+# first second third\expnd0\expndtw0\kerning0
+\
+echo "Elements in array1:  $\{array1[@]\}"\expnd0\expndtw0\kerning0
+     #  \expnd0\expndtw0\kerning0
+\
+echo "Elements in array2:  $\{array2[@]\}"\expnd0\expndtw0\kerning0
+     #  \expnd0\expndtw0\kerning0
+\
+echo "Elements in array3:  $\{array3[@]\}"\expnd0\expndtw0\kerning0
+     #  \expnd0\expndtw0\kerning0
+\
+echo\
+echo "Length of first element in array0 = $\{#array0\}"\expnd0\expndtw0\kerning0
+     # 5\expnd0\expndtw0\kerning0
+\
+echo "Length of first element in array1 = $\{#array1\}"\expnd0\expndtw0\kerning0
+     # 0\expnd0\expndtw0\kerning0
+\
+echo "Length of first element in array2 = $\{#array2\}"\expnd0\expndtw0\kerning0
+     # 0\expnd0\expndtw0\kerning0
+\
+echo "Length of first element in array3 = $\{#array3\}"\expnd0\expndtw0\kerning0
+     # 0\expnd0\expndtw0\kerning0
+\
+echo\
+echo "Number of elements in array0 = $\{#array0[*]\}"  # 3\
+echo "Number of elements in array1 = $\{#array1[*]\}"  # 1  (Surprise!)\
+echo "Number of elements in array2 = $\{#array2[*]\}"  # 0\
+echo "Number of elements in array3 = $\{#array3[*]\}"  # 0\
+\} \
+
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+
+\f2\fs26 \expnd0\expndtw0\kerning0
+# Adding an element to an array.\
+array0=( "$\{array0[@]\}" "new1" )\expnd0\expndtw0\kerning0
+     # first second third new1 5 4\expnd0\expndtw0\kerning0
+\
+array1=( "$\{array1[@]\}" "new1" )\expnd0\expndtw0\kerning0
+     #   new1 0 2\expnd0\expndtw0\kerning0
+\
+array2=( "$\{array2[@]\}" "new1" )\expnd0\expndtw0\kerning0
+     # new1 4 1\expnd0\expndtw0\kerning0
+\
+array3=( "$\{array3[@]\}" "new1" )\expnd0\expndtw0\kerning0
+     # new1 4 1
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+ListArrayFunction
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+# Adding an element to an array.\
+array0=( "$\{array0[@]\}" "new1" )     # first second third new1 new2 5 5\
+array1=( "$\{array1[@]\}" "new1" )     #   new1 new2 0 3\
+array2=( "$\{array2[@]\}" "new1" )     # new1 new2 4 2\
+array3=( "$\{array3[@]\}" "new1" )     # new1 new2 4 2s
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+
+\f2\fs26 \expnd0\expndtw0\kerning0
+ListArrayFunction
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+#to remove or pop an element from array \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+unset array2[$\{#array2[@]\}-1]\
+
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 #replacement \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+array4=( $\{array0[@]/second/2nd\} )        #\expnd0\expndtw0\kerning0
+first \cb10 2nd\cb1  third new1 new2
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+#string operations on elements are possible\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+array5=( $\{array0[@]//new?/old\} )\expnd0\expndtw0\kerning0
+         #first second third old old
+\f0\fs28 \kerning1\expnd0\expndtw0 \
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+array6=( $\{array0[@]#*new\} )    \expnd0\expndtw0\kerning0
+          #first second third 1 2\
+\
+\expnd0\expndtw0\kerning0
+array7=( $\{array0[@]#new1\} )\expnd0\expndtw0\kerning0
+              #first second third new2\
+\
+\expnd0\expndtw0\kerning0
+array8=( $\{array0[@]/new1/\} ) \expnd0\expndtw0\kerning0
+            #first second third new2\
+\
+The relationship of $\{array_name[@]\} and $\{array_name[*]\} is analogous to that between $@ and $*. 
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 What is sparse array ? \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Sparse arrays is arrays with holes (missing elements) in them.\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \expnd0\expndtw0\kerning0
+  array1[0]=0\
+# array1[1] not assigned\
+  array1[2]=2\
+  array2=( "$\{array1[@]\}" )            # Copy it?\
+\
+echo $\{array2[0]\}                      # 0\
+echo $\{array2[2]\}                      # (null), should be 2
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 How to load content of file using array\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 File is on desktop.. where script is running.. \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \cb11 \expnd0\expndtw0\kerning0
+#!/bin/bash\
+filename=sample_file\
+\
+#            cat sample_file\
+#            1 a b c\
+#            2 d e fg\
+\
+declare -a array1\
+array1=( `cat "$filename"`)                #  Loads contents\
+#         List file to stdout              #+ of $filename into array1.\
+#\
+#  array1=( `cat "$filename" | tr '\\n' ' '`)\
+#                            change linefeeds in file to spaces. \
+#  Not necessary because Bash does word splitting,\
+#+ changing linefeeds to spaces.\
+\
+echo $\{array1[@]\}            # List the array.\
+#                              1 a b c 2 d e fg\
+#\
+#  Each whitespace-separated "word" in the file\
+#+ has been assigned to an element of the array.\
+\
+element_count=$\{#array1[*]\}\
+echo $element_count          # 8
+\fs26 \cb1 \
+\
+
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Example 27-8. Initializing arrays\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs26 \cf0 \expnd0\expndtw0\kerning0
+$DIRSTACK
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 http://tldp.org/LDP/abs/html/internalvariables.html#PROCCID\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth3060\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth16720\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \lastrow\row
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Subshells ( This is required prior to go back to above URL ) \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Running a shell script launches a new process, a subshell. A subshell is a child process launched by a shell (or shell script).A subshell is a separate instance of the command processor -- the shell that gives you the prompt at the console or in an xterm window. Just as your commands are interpreted at the command-line prompt, similarly does a script batch-process a list of commands. Each shell script running is, in effect, a subprocess (child process) of the parent shell.\
+\
+These subshells let the script do parallel processing, in effect executing multiple subtasks simultaneously.\
+\
+\pard\intbl\itap1\pardeftab720
+
+\fs26 \cf0 \expnd0\expndtw0\kerning0
+\
+\
+\
+
+\fs28 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Example 21-1. Variable scope in a subshell\cell 
+\pard\intbl\itap1\pardeftab720
+
+\fs26 \cf0 \expnd0\expndtw0\kerning0
+( command1; command2; command3; ... ) A command list embedded between 
+\i \expnd0\expndtw0\kerning0
+parentheses
+\i0 \expnd0\expndtw0\kerning0
+ runs as a subshell. Variables in a subshell are not visible outside the block of code in the subshell. They are not accessible to the parent process, to the shell that launched the subshell. These are, in effect, variables local to the child process.\
+\
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs20 \cf0 \cb8 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \expnd0\expndtw0\kerning0
+\
+
+\f2 \expnd0\expndtw0\kerning0
+var=41                                                 # Global variable.\
+( let "var+=1"; echo "\\$var INSIDE subshell = $var" )  # 42\
+\
+echo "\\$var OUTSIDE subshell = $var"                   # 41\
+#  Variable operations inside a subshell, even to a GLOBAL variable\
+#  do not affect the value of the variable outside the subshell!\
+exit 0
+\f0 \expnd0\expndtw0\kerning0
+\
+\pard\intbl\itap1\pardeftab720
+
+\fs28 \cf0 \cb1 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf0  $BASH_SUBSHELL and $SHLVL \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 The scope of a variable is the context in which it has meaning, in which it has a value that can be referenced. For example, the scope of a local variable lies only within the function, block of code, or subshell within which it is defined, while the scope of a global variable is the entire script in which it appears.\
+\
+echo " \\$BASH_SUBSHELL outside subshell       = $BASH_SUBSHELL"                       # 0\
+  ( echo " \\$BASH_SUBSHELL inside subshell        = $BASH_SUBSHELL" )                 # 1\
+  \cb5 ( ( \cb1 echo " \\$BASH_SUBSHELL inside nested subshell = $BASH_SUBSHELL" \cb12 ) )  \cb1    # 2\
+# ^ ^                           *** nested ***                        ^ ^\
+\
+echo\
+\
+echo " \\$SHLVL outside subshell = $SHLVL"                                                                       # 3\
+\cb4 (\cb1  echo " \\$SHLVL inside subshell  = $SHLVL" \cb4 )\cb1                                                                    # 3 (No change!)\
+\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cb13 Example 21-2. List User Profiles\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Pending \'97 http://tldp.org/LDP/abs/html/subshells.html#PARVIS\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cb1 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Example 20-4. Avoiding a subshell\cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 In this example, we are trying to use exec instead of subshell so that we can capture local variable value outside of while-loop.  Assume that we have file myfile.txt with 6 lines \
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs22 \cf0 \cb11 \expnd0\expndtw0\kerning0
+#!/bin/bash
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+Lines=0
+\f0 \kerning1\expnd0\expndtw0 \
+
+\f2 \expnd0\expndtw0\kerning0
+cat myfile.txt | while read line;\
+                 do \{\
+                   echo $line\
+                   (( Lines++ ));  #  Incremented values of this variable\
+                                   #+ inaccessible outside loop.\
+                                   #  Subshell problem.\
+                 \} \expnd0\expndtw0\kerning0
+done\expnd0\expndtw0\kerning0
+\
+echo "Number of lines read = $Lines"     # 0 which is not correct\
+\'97 \
+file=myfile.txt\
+exec < $file\
+while read line <&0\
+do \{\
+   echo \'93$line\'94\
+   (( Lines++ ));\
+\} done\
+echo \expnd0\expndtw0\kerning0
+"Number of lines read = $Lines"     # 6 which is correct\expnd0\expndtw0\kerning0
+\
+exit 0\
+
+\f0\fs28 \cb1 \kerning1\expnd0\expndtw0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f1\fs32 \cf0 \expnd0\expndtw0\kerning0
+$$
+\f0\fs28 \kerning1\expnd0\expndtw0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 Process ID variable. The $$ variable holds the process ID [4] of the script in which it appears.  \
+\
+http://tldp.org/LDP/abs/html/special-chars.html\
+\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalc \clshdrawnil \clwWidth6220\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx4320
+\clvertalc \clshdrawnil \clwWidth12440\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf6 \clbrdrl\brdrs\brdrw20\brdrcf6 \clbrdrb\brdrs\brdrw20\brdrcf6 \clbrdrr\brdrs\brdrw20\brdrcf6 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell 
+\pard\intbl\itap1\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \cell \lastrow\row
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+
+\fs36  }
